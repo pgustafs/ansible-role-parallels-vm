@@ -1,0 +1,8 @@
+---
+# defaults file for ansible-role-parallels-vm
+parallels_vm_name:
+parallels_vm_memory: 1024
+parallels_vm_cpu_count: 1
+parallels_vm_state: present
+parallels_vm_clone:
+parallels_vm_template:

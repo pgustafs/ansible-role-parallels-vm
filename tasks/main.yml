@@ -1,0 +1,26 @@
+---
+# tasks file for ansible-role-parallels-vm
+- name: "Create Virtual Machine"
+  parallels_vms:
+    name: "{{ parallels_vm_name }}"
+    state: "{{ parallels_vm_state }}"
+    memory: "{{ parallels_vm_memory }}"
+    cpu_count: "{{ parallels_vm_cpu_count }}"
+    clone: "{{ parallels_vm_clone }}"
+    template: "{{ parallels_vm_template}}"
+  when: parallels_vm_state == "present" or parallels_vm_state == "running"
+
+- name: "Delete Virtual Machines"
+  parallels_vms:
+    name: "{{ parallels_vm_name }}"
+    state: "{{ parallels_vm_state }}"
+  when: parallels_vm_state == "absent"
+
+- name: "Wait for Virtual Machine to boot up and become responsive to SSH"
+  wait_for:
+    port: 22
+    host: "{{ parallels_vm_name }}"
+    search_regex: OpenSSH
+    delay: 10
+    timeout: 300
+  when: parallels_vm_state == "running"
